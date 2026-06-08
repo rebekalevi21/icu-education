@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICU Sim-Learn - סימולציות ולמידה בטיפול נמרץ</title>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <!-- Mobile Menu Toggle Button -->
+  <button class="menu-toggle" id="menuToggleBtn" aria-label="תפריט">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">ICU</div>
+        <div class="brand-title">Sim-Learn</div>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="menu-item active" data-view="dashboard">
+          <a href="#dashboard">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>לוח בקרה</span>
+          </a>
+        </li>
+        <li class="menu-item" data-view="ventilator">
+          <a href="#ventilator">
+            <i class="fa-solid fa-wind"></i>
+            <span>סימולטור הנשמה</span>
+          </a>
+        </li>
+        <li class="menu-item" data-view="scenarios">
+          <a href="#scenarios">
+            <i class="fa-solid fa-user-doctor"></i>
+            <span>תרחישים קליניים</span>
+          </a>
+        </li>
+        <li class="menu-item" data-view="abg">
+          <a href="#abg">
+            <i class="fa-solid fa-droplet"></i>
+            <span>תרגול גזים (ABG)</span>
+          </a>
+        </li>
+        <li class="menu-item" data-view="calculators">
+          <a href="#calculators">
+            <i class="fa-solid fa-calculator"></i>
+            <span>מחשבוני טיפול נמרץ</span>
+          </a>
+        </li>
+        <li class="menu-item" data-view="checklists">
+          <a href="#checklists">
+            <i class="fa-solid fa-list-check"></i>
+            <span>צ'קליסטים לפעולות</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <p>ICU Sim-Learn v1.0</p>
+        <p>© 2026 כל הזכויות שמורות</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="main-content">
+      
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="page-title">
+          <h1 id="viewTitle">לוח בקרה</h1>
+          <p id="viewSubtitle">סקירת ביצועים וסימנים חיוניים בטיפול נמרץ</p>
+        </div>
+        
+        <div class="audio-controls">
+          <div class="alarm-sound-wave" id="alarmSoundWave" style="display: none;">
+            <span></span><span></span><span></span>
+          </div>
+          <button class="btn-audio" id="audioToggleBtn" title="צליל מוניטור (השתק/הפעל)">
+            <i class="fa-solid fa-volume-xmark"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic App View Render Target -->
+      <section id="appView">
+        <!-- Content will be injected dynamically via app.js -->
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Audio Context Elements (Sine Wave Synthesizer used for pure, crisp beeps without external files) -->
+  
+  <!-- JavaScript Files -->
+  <script src="js/vitals.js"></script>
+  <script src="js/abg.js"></script>
+  <script src="js/calculators.js"></script>
+  <script src="js/checklists.js"></script>
+  <script src="js/scenarios.js"></script>
+  <script src="js/ventilator.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
