@@ -121,6 +121,16 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.brand-credit {
+  font-size: 0.72rem;
+  color: var(--color-cyan);
+  opacity: 0.85;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  text-shadow: 0 0 5px rgba(0, 229, 255, 0.25);
+  margin-top: 1px;
+}
+
 .sidebar-menu {
   list-style: none;
   padding: 20px 12px;
@@ -1541,3 +1551,343 @@ body {
   margin: 0 auto 24px;
   box-shadow: var(--shadow-glow-green);
 }
+
+/* POCUS Simulator CSS */
+.pocus-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 24px;
+  direction: rtl;
+}
+
+@media (max-width: 1024px) {
+  .pocus-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.torso-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* Torso silhouette container */
+.torso-container {
+  position: relative;
+  width: 320px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 2px solid var(--border-color);
+  border-radius: 40px 40px 150px 150px;
+  box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.05);
+  margin: 20px auto;
+  overflow: visible;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Anatomical neck segment for torso look */
+.torso-container::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 22px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Chest nipples for clinical landmarks */
+.torso-nipple {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+}
+.nipple-left {
+  top: 170px;
+  left: 80px;
+}
+.nipple-right {
+  top: 170px;
+  right: 80px;
+}
+
+/* Sternum bone line guide */
+.torso-sternum {
+  position: absolute;
+  top: 60px;
+  bottom: 220px;
+  left: 50%;
+  width: 4px;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+}
+
+/* Hotspots for POCUS scan placements */
+.us-hotspot {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 229, 255, 0.08);
+  border: 2px dashed rgba(0, 229, 255, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-cyan);
+  font-size: 1rem;
+  transition: all var(--transition-speed) ease;
+  z-index: 10;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.05);
+}
+
+.us-hotspot:hover {
+  background: rgba(0, 229, 255, 0.2);
+  border-color: var(--color-cyan);
+  transform: scale(1.1);
+  box-shadow: var(--shadow-glow-cyan);
+}
+
+.us-hotspot.active {
+  background: rgba(0, 230, 118, 0.2);
+  border-color: var(--color-green);
+  color: var(--color-green);
+  border-style: solid;
+  box-shadow: var(--shadow-glow-green);
+  animation: hotspotPulse 1.5s infinite alternate;
+}
+
+@keyframes hotspotPulse {
+  0% { transform: scale(1); box-shadow: 0 0 8px rgba(0, 230, 118, 0.3); }
+  100% { transform: scale(1.1); box-shadow: 0 0 16px rgba(0, 230, 118, 0.7); }
+}
+
+/* Dynamic positions on Torso */
+.hotspot-plax {
+  top: 135px;
+  left: 125px; /* left parasternal boundary */
+}
+
+.hotspot-lung-ant {
+  top: 90px;
+  right: 75px; /* right anterior chest, 2nd ICS */
+}
+
+.hotspot-lung-base {
+  top: 250px;
+  right: 45px; /* right mid-axillary costophrenic angle */
+}
+
+/* Transducer probe graphic */
+.pocus-probe {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, #152238 100%);
+  border: 2px solid var(--color-cyan);
+  border-radius: 12px 12px 50% 50%;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-cyan);
+  font-size: 1.3rem;
+  box-shadow: var(--shadow-glow-cyan);
+  transition: transform 0.1s ease;
+  z-index: 20;
+}
+
+.pocus-probe:active {
+  cursor: grabbing;
+  transform: scale(0.95);
+  box-shadow: 0 0 15px var(--color-cyan);
+}
+
+.pocus-probe-dock {
+  width: 70px;
+  height: 70px;
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 16px;
+}
+
+.pocus-probe-dock-label {
+  position: absolute;
+  bottom: -22px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* POCUS Screen Monitor */
+.ultrasound-monitor {
+  background: #000;
+  border: 3px solid var(--border-color);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.9), var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.ultrasound-monitor::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.monitor-screen-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #888;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.monitor-canvas-container {
+  width: 100%;
+  height: 280px;
+  background: #000000;
+  position: relative;
+  border-radius: 4px;
+}
+
+.monitor-scan-sector {
+  position: absolute;
+  top: 5px;
+  left: 5%;
+  width: 90%;
+  height: 95%;
+  background: #030303;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  border-left: 1px solid rgba(255,255,255,0.1);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  z-index: 1;
+}
+
+.pocus-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  background: transparent;
+}
+
+/* Sector Overlay markings */
+.pocus-monitor-overlay {
+  position: absolute;
+  right: 10px;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #00e5ff;
+  z-index: 8;
+  text-align: right;
+  text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+}
+
+.pocus-monitor-overlay-left {
+  position: absolute;
+  left: 10px;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #00e5ff;
+  z-index: 8;
+  text-align: left;
+  text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+}
+
+/* Depth markers ruler */
+.pocus-depth-ruler {
+  position: absolute;
+  right: 5px;
+  top: 80px;
+  bottom: 20px;
+  width: 6px;
+  border-left: 1px solid rgba(255,255,255,0.3);
+  z-index: 8;
+}
+
+.pocus-depth-tick {
+  position: absolute;
+  right: 0;
+  width: 4px;
+  height: 1px;
+  background: rgba(255,255,255,0.5);
+}
+
+/* Case selections CSS */
+.pocus-case-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.01);
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+  transition: all var(--transition-speed) ease;
+  text-align: right;
+}
+
+.pocus-case-btn:hover {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--color-cyan);
+}
+
+.pocus-case-btn.active {
+  background: rgba(0, 229, 255, 0.05);
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+}
+
+.pocus-case-btn.completed {
+  border-color: var(--color-green);
+  background: rgba(0, 230, 118, 0.02);
+}
+
+.pocus-interpretation-box {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 16px;
+  min-height: 48px;
+}
+

@@ -785,6 +785,114 @@ const App = {
           </div>
         </div>
       </div>
+    `,
+    
+    ultrasound: `
+      <div class="pocus-layout">
+        <!-- Left: Torso Scanning Silhouette -->
+        <div class="card torso-panel" style="margin:0;">
+          <h3 style="font-family:var(--font-header); color:var(--color-cyan); margin-bottom:10px; width:100%; text-align:right;"><i class="fa-solid fa-hospital-user"></i> דמות המטופל ונקודות סריקה</h3>
+          <p style="color:var(--text-secondary); font-size:0.85rem; line-height:1.5; margin-bottom:20px; width:100%; text-align:right;">
+            גרור את מתמר האולטרסאונד (ה-Probe) מהמעמד שלו והנח אותו על אחת מנקודות הסריקה (Hotspots) המהבהבות בגוף המטופל כדי לצפות בתמונה החיה על גבי המוניטור.
+          </p>
+
+          <div class="torso-container" id="pocusTorso">
+            <!-- Sternum and nipples landmarks -->
+            <div class="torso-sternum"></div>
+            <div class="torso-nipple nipple-left"></div>
+            <div class="torso-nipple nipple-right"></div>
+
+            <!-- Hotspots -->
+            <!-- 1. Parasternal Long Axis (PLAX) -->
+            <div class="us-hotspot hotspot-plax" id="hotspot_plax" title="לב - ציר אורך (PLAX)">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+            
+            <!-- 2. Right Anterior Lung -->
+            <div class="us-hotspot hotspot-lung-ant" id="hotspot_lung_ant" title="ריאה ימנית עליונה (Anterior Lung)">
+              <i class="fa-solid fa-lungs"></i>
+            </div>
+            
+            <!-- 3. Right Lung Base / Costophrenic -->
+            <div class="us-hotspot hotspot-lung-base" id="hotspot_lung_base" title="ריאה ימנית בסיס (Costophrenic Angle)">
+              <i class="fa-solid fa-lungs"></i>
+            </div>
+
+            <!-- Interactive Draggable Transducer Probe -->
+            <div class="pocus-probe" id="pocusProbe" style="left:135px; top:445px;">
+              <i class="fa-solid fa-satellite-dish"></i>
+            </div>
+          </div>
+
+          <!-- Probe dock container at the bottom -->
+          <div class="pocus-probe-dock" id="pocusDock">
+            <div class="pocus-probe-dock-label">מעמד מתמר אולטרסאונד</div>
+          </div>
+        </div>
+
+        <!-- Right: Scanner monitor and clinical challenge selection -->
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <!-- POCUS screen monitor -->
+          <div class="ultrasound-monitor">
+            <div class="monitor-screen-header">
+              <span>PT: MORTON (מיטה 480)</span>
+              <span>ICU POCUS v1.2</span>
+            </div>
+            
+            <div class="monitor-canvas-container">
+              <!-- Sector fan shape mask -->
+              <div class="monitor-scan-sector"></div>
+              
+              <!-- Draw canvas -->
+              <canvas id="pocusCanvas" class="pocus-canvas"></canvas>
+              
+              <!-- Monitor overlays -->
+              <div class="pocus-monitor-overlay" id="pocusOverlayPanel" style="display:none;">
+                <span id="pocusDepthText">D: 16cm</span>
+                <span>G: 50%</span>
+                <span>B-MODE</span>
+              </div>
+
+              <div class="pocus-monitor-overlay-left" id="pocusOverlayLeftPanel" style="display:none;">
+                <span id="pocusFreqText">F: 2.5MHz</span>
+                <span>MI: 1.1</span>
+                <span>TIS: 0.2</span>
+              </div>
+
+              <!-- Depth tick marks ruler -->
+              <div class="pocus-depth-ruler">
+                <div class="pocus-depth-tick" style="top:10%"></div>
+                <div class="pocus-depth-tick" style="top:25%"></div>
+                <div class="pocus-depth-tick" style="top:40%"></div>
+                <div class="pocus-depth-tick" style="top:55%"></div>
+                <div class="pocus-depth-tick" style="top:70%"></div>
+                <div class="pocus-depth-tick" style="top:85%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Case Description -->
+          <div class="card" id="pocusCaseDesc" style="margin:0; padding:16px;"></div>
+
+          <!-- Scan findings log -->
+          <div class="card" id="pocusFindingsBox" style="margin:0; padding:16px;"></div>
+
+          <!-- Diagnosis Option Card -->
+          <div class="card" style="margin:0; padding:20px; text-align:right;">
+            <div id="pocusDiagnosisPanel"></div>
+            
+            <button class="btn btn-primary" id="pocusSubmitBtn" disabled style="width:100%; margin-top:16px;"><i class="fa-solid fa-circle-check"></i> אשר אבחנה וטיפול</button>
+            
+            <div id="pocusFeedbackArea" style="margin-top:16px; display:none;"></div>
+          </div>
+
+          <!-- Cases list selection -->
+          <div class="card" style="margin:0; padding:16px;">
+            <div style="font-size:0.9rem; font-weight:600; color:var(--text-secondary); margin-bottom:12px; text-align:right;"><i class="fa-solid fa-list"></i> בחר מקרה למידה אולטרסאונד:</div>
+            <div id="pocusCasesList"></div>
+          </div>
+        </div>
+      </div>
     `
   },
 
@@ -857,7 +965,8 @@ const App = {
       abg: { title: 'משחק גזים בדם (ABG)', subtitle: 'תרגול מהיר של בדיקות גזים בדם עורקי ופיצויים' },
       calculators: { title: 'מחשבוני טיפול נמרץ', subtitle: 'מחשבונים ונוסחאות רפואיות שימושיות לשימוש קליני' },
       checklists: { title: 'צ\'קליסטים לפעולות', subtitle: 'רשימות תיוג לפעולות מורכבות למניעת סיבוכים וזיהומים' },
-      escape: { title: 'חדר בריחה (משמרת חירום)', subtitle: 'פתור את מקרה החירום של MORTON (מיטה 480) בתוך 20 דקות' }
+      escape: { title: 'חדר בריחה (משמרת חירום)', subtitle: 'פתור את מקרה החירום של MORTON (מיטה 480) בתוך 20 דקות' },
+      ultrasound: { title: 'סימולטור אולטרסאונד (POCUS)', subtitle: 'ביצוע סריקות אולטרסאונד של הלב, הריאות והסרעפת ליד מיטת המטופל' }
     };
 
     if (titleEl && headings[this.activeView]) {
@@ -882,6 +991,9 @@ const App = {
     }
     if (window.ICEscapeRoom) {
       window.ICEscapeRoom.cleanup();
+    }
+    if (window.ICUUltrasound) {
+      window.ICUUltrasound.cleanup();
     }
 
     // Inject View HTML
@@ -952,6 +1064,13 @@ const App = {
     else if (this.activeView === 'escape') {
       if (window.ICEscapeRoom) {
         window.ICEscapeRoom.init();
+      }
+    }
+    
+    // 8. Ultrasound initialization
+    else if (this.activeView === 'ultrasound') {
+      if (window.ICUUltrasound) {
+        window.ICUUltrasound.init();
       }
     }
   }

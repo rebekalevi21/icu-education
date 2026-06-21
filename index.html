@@ -22,7 +22,10 @@
     <aside class="sidebar" id="appSidebar">
       <div class="sidebar-brand">
         <div class="brand-icon">ICU</div>
-        <div class="brand-title">Sim-Learn</div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <div class="brand-title">Sim-Learn</div>
+          <div class="brand-credit">פותח ע"י רבקה לוי</div>
+        </div>
       </div>
       
       <ul class="sidebar-menu">
@@ -68,10 +71,17 @@
             <span>חדר בריחה</span>
           </a>
         </li>
+        <li class="menu-item" data-view="ultrasound">
+          <a href="#ultrasound">
+            <i class="fa-solid fa-hospital-user"></i>
+            <span>סימולטור אולטרסאונד (POCUS)</span>
+          </a>
+        </li>
       </ul>
       
       <div class="sidebar-footer">
         <p>ICU Sim-Learn v1.0</p>
+        <p>פותח ע"י <strong>רבקה לוי</strong></p>
         <p>© 2026 כל הזכויות שמורות</p>
       </div>
     </aside>
@@ -113,6 +123,7 @@
   <script src="js/checklists.js"></script>
   <script src="js/scenarios.js"></script>
   <script src="js/ventilator.js"></script>
+  <script src="js/ultrasound.js"></script>
   <script src="js/escape.js"></script>
   <script src="app.js"></script>
 </body>
