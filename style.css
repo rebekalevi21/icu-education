@@ -1344,3 +1344,200 @@ body {
     display: flex;
   }
 }
+
+/* Escape Room Simulation CSS */
+.escape-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.escape-dashboard-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 171, 0, 0.05);
+  border: 1px solid rgba(255, 171, 0, 0.2);
+  border-radius: 12px;
+  padding: 16px 24px;
+  box-shadow: 0 0 15px rgba(255, 171, 0, 0.05);
+}
+
+.escape-timer {
+  font-family: var(--font-mono);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #ffab00;
+  text-shadow: 0 0 15px rgba(255, 171, 0, 0.5);
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.escape-station-title {
+  font-family: var(--font-header);
+  font-size: 1.3rem;
+  color: var(--color-cyan);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.escape-lock-box {
+  background: rgba(5, 7, 12, 0.95);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 420px;
+  margin: 20px auto;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-speed) ease;
+}
+
+.escape-lock-box.locked {
+  border-color: var(--color-red);
+  box-shadow: 0 0 15px rgba(255, 23, 68, 0.15);
+}
+
+.escape-lock-box.unlocked {
+  border-color: var(--color-green);
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.15);
+}
+
+.escape-lock-dials {
+  display: flex;
+  gap: 12px;
+  direction: ltr; /* keep numeric inputs standard left-to-right */
+}
+
+.escape-lock-input {
+  width: 50px;
+  height: 60px;
+  background: var(--bg-tertiary);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 700;
+  transition: all var(--transition-speed) ease;
+}
+
+.escape-lock-input:focus {
+  outline: none;
+  border-color: var(--color-cyan);
+  background: rgba(0, 229, 255, 0.05);
+}
+
+/* Stethoscope lung assessment spot */
+.stethoscope-body {
+  position: relative;
+  max-width: 320px;
+  height: 240px;
+  margin: 20px auto;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+
+.stethoscope-spot {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(0, 229, 255, 0.15);
+  border: 2px solid var(--color-cyan);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-cyan);
+  font-size: 1.1rem;
+  transition: all var(--transition-speed) ease;
+}
+
+.stethoscope-spot:hover {
+  background: var(--color-cyan);
+  color: var(--bg-primary);
+  transform: scale(1.1);
+  box-shadow: var(--shadow-glow-cyan);
+}
+
+.stethoscope-spot.active {
+  background: var(--color-green);
+  border-color: var(--color-green);
+  color: var(--bg-primary);
+}
+
+.spot-right-lung {
+  top: 35%;
+  right: 25%;
+}
+
+.spot-left-lung {
+  top: 35%;
+  left: 25%;
+}
+
+/* Audio control details */
+.escape-sound-widget {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+/* Success Screen Splash overlay */
+.escape-success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 7, 12, 0.96);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  direction: rtl;
+}
+
+.escape-success-content {
+  max-width: 600px;
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 2px solid var(--color-green);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0, 230, 118, 0.25);
+  animation: scale-up 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes scale-up {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.escape-badge {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--color-green), var(--color-cyan));
+  color: var(--bg-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 24px;
+  box-shadow: var(--shadow-glow-green);
+}

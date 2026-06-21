@@ -647,6 +647,144 @@ const App = {
       <div id="checklistAppTarget" style="min-height:500px; display:flex; align-items:center; justify-content:center;">
         <div style="color:var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; margin-bottom:12px; display:block; text-align:center;"></i>טוען צ'קליסטים...</div>
       </div>
+    `,
+    
+    escape: `
+      <div class="escape-layout">
+        <!-- Dashboard bar -->
+        <div class="escape-dashboard-bar" style="margin-bottom: 24px;">
+          <div class="escape-station-title" id="escapeStationTitle">
+            <i class="fa-solid fa-door-open"></i>
+            <span>תחנה 1: ייצוב נשימתי ופתיחת חסימת הציוד</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:20px;">
+            <div class="escape-sound-widget">
+              <button class="btn btn-secondary" id="escapeAudioToggle" style="padding:6px 12px; font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-volume-xmark" id="escapeAudioIcon"></i>
+                <span id="escapeAudioText">צלילים מושתקים</span>
+              </button>
+            </div>
+            <div class="escape-timer" id="escapeTimer">20:00</div>
+          </div>
+        </div>
+
+        <!-- Introduction Overlay (Only shown before starting) -->
+        <div id="escapeIntroOverlay" class="card" style="text-align:center; padding:40px; max-width:650px; margin:20px auto;">
+          <div style="font-size:3rem; color:#ffab00; margin-bottom:20px;"><i class="fa-solid fa-hourglass-start"></i></div>
+          <h2 style="font-family:var(--font-header); margin-bottom:16px; color:var(--text-primary);">משמרת חירום - חדר בריחה טיפול נמרץ</h2>
+          <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:24px; text-align:right;">
+            <strong>ברוכים הבאים לסימולציית חדר הבריחה הלימודי של טיפול נמרץ!</strong><br><br>
+            אתה מתחיל משמרת לילה סוערת ביחידה. במיטה 480 שוכב המטופל <strong>MORTON</strong>, מונשם מזה יומיים.
+            לפתע המוניטור מתחיל לצפצף – הסטורציה צונחת ל-87%, הדופק עולה ל-110, והמטופל במצוקה קשה.<br><br>
+            עליך לפעול במהירות לייצוב המטופל בתוך <strong>20 דקות בלבד</strong>. 
+            הדרך היחידה להצילו ולפתוח את החדר היא לעבור בהצלחה את 3 התחנות:
+          </p>
+          <ul style="color:var(--text-secondary); text-align:right; margin:0 auto 24px auto; max-width:450px; line-height:1.6;">
+            <li><strong>תחנה 1:</strong> פתיחת ארון הציוד הנעול וביצוע פעולות הנשמה דחופות (שסתום PEEP, סקשן ואמבו).</li>
+            <li><strong>תחנה 2:</strong> זיהוי המצוקה ומתן תרופת סדציה בפרוטוקול אימות כפול (Fentanyl).</li>
+            <li><strong>תחנה 3:</strong> האזנה לריאות, פענוח גזים בדם (ABG) והזנת מפתח הבריחה הדיגיטלי.</li>
+          </ul>
+          <button class="btn btn-primary" id="escapeStartBtn" style="font-size:1.1rem; padding:12px 32px;"><i class="fa-solid fa-play"></i> התחל משמרת חירום</button>
+        </div>
+
+        <!-- Main Game Area (Hidden initially) -->
+        <div id="escapeGameArea" style="display:none;">
+          <!-- Bedside Vitals Monitor (synced to the escape game) -->
+          <div class="vitals-monitor-panel" id="vitalsMonitorPanel" style="margin-bottom:24px;">
+            <div class="monitor-waveforms">
+              <div class="waveform-channel">
+                <span class="waveform-label label-ecg"><i class="fa-solid fa-heart pulse-glow-cyan heartbeat-icon"></i> ECG (קצב לב) - מיטה 480 - MORTON</span>
+                <canvas id="ecgCanvas" class="waveform-canvas"></canvas>
+              </div>
+              <div class="waveform-channel">
+                <span class="waveform-label label-spo2"><i class="fa-solid fa-wave-square"></i> SpO₂ (סטורציה)</span>
+                <canvas id="spo2Canvas" class="waveform-canvas"></canvas>
+              </div>
+              <div class="waveform-channel">
+                <span class="waveform-label label-resp"><i class="fa-solid fa-lungs"></i> Resp (קצב נשימה)</span>
+                <canvas id="co2Canvas" class="waveform-canvas"></canvas>
+              </div>
+            </div>
+            <div class="monitor-numeric">
+              <div class="vitals-grid-sidebar">
+                <div class="vital-box green">
+                  <div class="vital-meta">
+                    <span class="vital-title">HR</span>
+                    <span class="vital-limit">60-100</span>
+                  </div>
+                  <div class="vital-value" id="monitorHR">110</div>
+                </div>
+                <div class="vital-box red">
+                  <div class="vital-meta">
+                    <span class="vital-title">BP</span>
+                    <span class="vital-limit">120/80</span>
+                  </div>
+                  <div class="vital-value" id="monitorBP" style="font-size:1.6rem">135/85</div>
+                </div>
+                <div class="vital-box cyan">
+                  <div class="vital-meta">
+                    <span class="vital-title">SpO₂</span>
+                    <span class="vital-limit">95-100</span>
+                  </div>
+                  <div class="vital-value" id="monitorSpO2">87</div>
+                </div>
+                <div class="vital-box yellow">
+                  <div class="vital-meta">
+                    <span class="vital-title">RR</span>
+                    <span class="vital-limit">12-20</span>
+                  </div>
+                  <div class="vital-value" id="monitorRR">30</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Station Content Panel -->
+          <div id="escapeStationPanel"></div>
+        </div>
+
+        <!-- Success Screen Overlay -->
+        <div id="escapeSuccessOverlay" class="escape-success-overlay" style="display:none;">
+          <div class="escape-success-content">
+            <div class="escape-badge"><i class="fa-solid fa-trophy"></i></div>
+            <h2 style="font-family:var(--font-header); margin-bottom:16px; color:var(--color-green);">עברת את משמרת החירום בהצלחה!</h2>
+            <p style="font-size:1.1rem; line-height:1.6; margin-bottom:24px;">
+              הצלחת לייצב את המטופל <strong>MORTON</strong>, לפענח את הבעיה הריאתית שלו ולפתוח את חדר הבריחה בזמן!
+            </p>
+            <div class="score-stats" style="margin-bottom:24px;">
+              <div class="score-stat-box">
+                <div class="score-stat-title">זמן שנותר</div>
+                <div class="score-stat-value" id="escapeSuccessTime" style="color:var(--color-cyan)">00:00</div>
+              </div>
+              <div class="score-stat-box">
+                <div class="score-stat-title">תקלות ועיכובים</div>
+                <div class="score-stat-value" id="escapeSuccessDeductions" style="color:var(--color-green)">אפס!</div>
+              </div>
+            </div>
+            <div class="debrief-box" style="text-align:right; margin-bottom:24px; padding:16px; background:rgba(255,255,255,0.02); border-radius:8px;">
+              <strong style="color:var(--color-cyan)">סיכום רפואי ונקודות מפתח:</strong>
+              <ul style="margin-top:10px; line-height:1.6; font-size:0.9rem; padding-right:20px;">
+                <li>הפרעה נשימתית מורכבת: שילוב של <strong>חמצת נשימתית (Respiratory Acidosis)</strong>, <strong>היפוקסמיה קשה (Hypoxemia)</strong> ו<strong>דלקת ריאות מצד ימין (Right Pneumonia)</strong>.</li>
+                <li>פתיחת צינור קנה חסום וחיבור למערכת ידנית Ambu עם שסתום PEEP מסייעים מיידית בריווח החמצן ושיפור הסטורציה.</li>
+                <li>סדציה כגון פנטניל חיונית למניעת אי שקט קיצוני ומלחמה במנשם, במיוחד תחת פרוטוקול בטיחות של תרופות בסיכון גבוה (Double Verification).</li>
+              </ul>
+            </div>
+            <button class="btn btn-primary" onclick="location.hash = '#dashboard'"><i class="fa-solid fa-house"></i> חזור ללוח הבקרה</button>
+          </div>
+        </div>
+
+        <!-- Failure Screen Overlay -->
+        <div id="escapeFailureOverlay" class="escape-success-overlay" style="display:none; background:rgba(5, 7, 12, 0.98);">
+          <div class="escape-success-content" style="border-color:var(--color-red); box-shadow: 0 0 40px rgba(255,23,68,0.25);">
+            <div class="escape-badge" style="background:var(--color-red);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h2 style="font-family:var(--font-header); margin-bottom:16px; color:var(--color-red);">הזמן תם! המטופל קרס.</h2>
+            <p style="font-size:1.1rem; line-height:1.6; margin-bottom:24px;">
+              לא הצלחת להשלים את פעולות ההצלה בתוך 20 דקות.
+            </p>
+            <button class="btn btn-primary" id="escapeRestartBtn" style="background:var(--color-red); color:#fff;"><i class="fa-solid fa-rotate-left"></i> נסה שוב</button>
+          </div>
+        </div>
+      </div>
     `
   },
 
@@ -718,7 +856,8 @@ const App = {
       scenarios: { title: 'תרחישים קליניים', subtitle: 'קבלת החלטות מבוססת הנחיות רפואיות בטיפול נמרץ בזמן אמת' },
       abg: { title: 'משחק גזים בדם (ABG)', subtitle: 'תרגול מהיר של בדיקות גזים בדם עורקי ופיצויים' },
       calculators: { title: 'מחשבוני טיפול נמרץ', subtitle: 'מחשבונים ונוסחאות רפואיות שימושיות לשימוש קליני' },
-      checklists: { title: 'צ\'קליסטים לפעולות', subtitle: 'רשימות תיוג לפעולות מורכבות למניעת סיבוכים וזיהומים' }
+      checklists: { title: 'צ\'קליסטים לפעולות', subtitle: 'רשימות תיוג לפעולות מורכבות למניעת סיבוכים וזיהומים' },
+      escape: { title: 'חדר בריחה (משמרת חירום)', subtitle: 'פתור את מקרה החירום של MORTON (מיטה 480) בתוך 20 דקות' }
     };
 
     if (titleEl && headings[this.activeView]) {
@@ -740,6 +879,9 @@ const App = {
     if (window.vitalsEngine) {
       window.vitalsEngine.stopAlarmLoop();
       VitalsState.alarmActive = false;
+    }
+    if (window.ICEscapeRoom) {
+      window.ICEscapeRoom.cleanup();
     }
 
     // Inject View HTML
@@ -803,6 +945,13 @@ const App = {
     else if (this.activeView === 'checklists') {
       if (window.ICUChecklists) {
         window.ICUChecklists.init();
+      }
+    }
+    
+    // 7. Escape Room initialization
+    else if (this.activeView === 'escape') {
+      if (window.ICEscapeRoom) {
+        window.ICEscapeRoom.init();
       }
     }
   }
