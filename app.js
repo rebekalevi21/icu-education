@@ -644,48 +644,8 @@ const App = {
     `,
     
     checklists: `
-      <div style="display:flex; gap:12px; margin-bottom:20px; border-bottom:1px solid var(--border-color); padding-bottom:10px; flex-wrap:wrap;">
-        <button class="btn btn-secondary checklist-tab active" data-category="rsi">הכנת אינטובציה (RSI)</button>
-        <button class="btn btn-secondary checklist-tab" data-category="cvc">צנתר מרכזי (CVC)</button>
-        <button class="btn btn-secondary checklist-tab" data-category="aline">ליין עורקי (Arterial Line)</button>
-      </div>
-
-      <div class="sim-grid" style="grid-template-columns: 1fr 280px;">
-        
-        <!-- Checklist panel -->
-        <div>
-          <div class="card">
-            <div class="card-title" id="checklistTitle">צ'קליסט פעולה</div>
-            
-            <div class="checklist-progress-bar">
-              <div class="checklist-progress-fill" id="checklistProgressFill"></div>
-            </div>
-            
-            <div id="checklistProgressText" style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;">
-              הושלמו 0 מתוך 10 שלבים (0%)
-            </div>
-
-            <div class="checklist-container" id="checklistItemsContainer">
-              <!-- Checklist nodes rendered via js/checklists.js -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Side: status & clear -->
-        <div style="display:flex; flex-direction:column; gap:16px;">
-          <div class="card">
-            <div class="card-title"><i class="fa-solid fa-shield" style="color:var(--color-green)"></i> פרוטוקול בטיחות</div>
-            <p style="font-size:0.8rem; line-height:1.5; color:var(--text-secondary); margin-bottom:16px;">
-              פעולות פולשניות בטיפול נמרץ נושאות סיכון גבוה לזיהומים נרכשים (CLABSI), פגיעות מכניות (חזה אוויר) או אי-יציבות נשימתית.
-              סימון רשימת התיוג מוודא כי כל המחסומים הסטריליים והבטיחותיים יושמו בהצלחה לפני הנגיעה במטופל.
-            </p>
-            <button class="btn btn-danger" id="checklistResetBtn" style="width:100%"><i class="fa-solid fa-rotate-left"></i> אפס רשימת תיוג</button>
-          </div>
-
-          <!-- Dynamic success alert card -->
-          <div id="checklistCompleteAlert" style="display:none;"></div>
-        </div>
-
+      <div id="checklistAppTarget" style="min-height:500px; display:flex; align-items:center; justify-content:center;">
+        <div style="color:var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; margin-bottom:12px; display:block; text-align:center;"></i>טוען צ'קליסטים...</div>
       </div>
     `
   },
